@@ -4,6 +4,33 @@ const prefersReducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)"
 ).matches;
 
+/* ---------- Nav scroll + mobile menu ---------- */
+const nav = document.querySelector(".nav");
+const navToggle = document.getElementById("navToggle");
+const navMenu = document.getElementById("navMenu");
+
+window.addEventListener(
+  "scroll",
+  () => {
+    nav?.classList.toggle("scrolled", window.scrollY > 24);
+  },
+  { passive: true }
+);
+
+navToggle?.addEventListener("click", () => {
+  const open = navMenu?.classList.toggle("open");
+  navToggle.classList.toggle("open", open);
+  navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+});
+
+navMenu?.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => {
+    navMenu.classList.remove("open");
+    navToggle?.classList.remove("open");
+    navToggle?.setAttribute("aria-expanded", "false");
+  });
+});
+
 /* ---------- Waitlist + analytics ---------- */
 function trackWaitlistClick() {
   if (typeof window.gtag === "function" && GA_MEASUREMENT_ID) {
@@ -47,32 +74,30 @@ if (GA_MEASUREMENT_ID) {
   gtag("config", GA_MEASUREMENT_ID);
 }
 
-/* ---------- Copy command button ---------- */
+/* ---------- Copy command ---------- */
 const copyBtn = document.getElementById("copyBtn");
-if (copyBtn) {
-  copyBtn.addEventListener("click", async () => {
-    const text = document.getElementById("copy-target")?.textContent?.trim();
-    if (!text) return;
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-    }
-    const label = copyBtn.querySelector(".copy-label");
-    const original = label ? label.textContent : "";
-    copyBtn.classList.add("copied");
-    if (label) label.textContent = "Copied";
-    setTimeout(() => {
-      copyBtn.classList.remove("copied");
-      if (label) label.textContent = original || "Copy";
-    }, 1600);
-  });
-}
+copyBtn?.addEventListener("click", async () => {
+  const text = document.getElementById("copy-target")?.textContent?.trim();
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+  const label = copyBtn.querySelector(".copy-label");
+  const original = label?.textContent ?? "";
+  copyBtn.classList.add("copied");
+  if (label) label.textContent = "Copied";
+  setTimeout(() => {
+    copyBtn.classList.remove("copied");
+    if (label) label.textContent = original || "Copy";
+  }, 1600);
+});
 
 /* ---------- Scroll reveal ---------- */
 const revealEls = document.querySelectorAll(".reveal");
@@ -81,55 +106,64 @@ if (prefersReducedMotion || !("IntersectionObserver" in window)) {
 } else {
   const io = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry) => {
+      entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
+          entry.target.style.transitionDelay = `${(i % 4) * 60}ms`;
           entry.target.classList.add("in");
           io.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: 0.12 }
   );
   revealEls.forEach((el) => io.observe(el));
 }
 
-/* ---------- FAQ: only one open at a time ---------- */
-const faqItems = document.querySelectorAll(".faq-item");
-faqItems.forEach((item) => {
+/* ---------- FAQ accordion ---------- */
+document.querySelectorAll(".faq-item").forEach((item) => {
   item.addEventListener("toggle", () => {
     if (item.open) {
-      faqItems.forEach((other) => {
+      document.querySelectorAll(".faq-item").forEach((other) => {
         if (other !== item) other.open = false;
       });
     }
   });
 });
 
+/* ---------- Terminal tilt (subtle) ---------- */
+const terminal = document.querySelector(".terminal.tilt");
+if (terminal && !prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
+  terminal.addEventListener("mousemove", (e) => {
+    const rect = terminal.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    terminal.style.transform = `perspective(800px) rotateY(${x * 4}deg) rotateX(${-y * 4}deg)`;
+  });
+  terminal.addEventListener("mouseleave", () => {
+    terminal.style.transform = "";
+  });
+}
+
 /* ---------- Animated terminal ---------- */
 const term = document.getElementById("term");
 if (term) {
   const lines = [
-    { html: `<span class="t-prompt">$</span> soloenv up`, type: true },
+    { html: `<span class="t-prompt">$</span> soloenv up --protect --ttl 4h` },
     { html: `<span class="t-dim">Starting compose project (compose.yaml)...</span>` },
-    { html: `<span class="t-ok">&#10003;</span> <span class="t-dim">Container web started</span>` },
+    { html: `<span class="t-ok">&#10003;</span> <span class="t-dim">Container web started on :8088</span>` },
     { html: `<span class="t-dim">Opening Cloudflare tunnel...</span>` },
     { html: `` },
-    { html: `  <span class="t-label">Your staging URL is live:</span>` },
-    { html: `  <span class="t-url">https://your-app.trycloudflare.com</span>` },
-    { html: `<span class="t-dim">  Protected — user: solo  password: ••••••••</span>` },
+    { html: `<span class="t-label">  Your staging URL is live</span>` },
+    { html: `<span class="t-url">  https://calm-river-1234.trycloudflare.com</span>` },
+    { html: `<span class="t-warn">  Protected — user: solo  password: d3v-xQ7p</span>` },
     { html: `` },
-    { html: `<span class="t-dim">Detached · expires in 4h · URL copied to clipboard</span>` },
-    { html: `<span class="t-dim">soloenv open · soloenv logs · soloenv down</span>` },
-    { html: `<span class="t-dim">Press Ctrl+C to tear it all down.</span>` },
+    { html: `<span class="t-dim">  QR code · URL copied to clipboard</span>` },
+    { html: `<span class="t-dim">  soloenv status · soloenv down</span>` },
   ];
 
   const cursor = '<span class="cursor"></span>';
 
-  function renderInstant() {
-    term.innerHTML = lines.map((l) => l.html).join("\n");
-  }
-
-  function sleep(ms) {
+  async function sleep(ms) {
     return new Promise((r) => setTimeout(r, ms));
   }
 
@@ -137,30 +171,26 @@ if (term) {
     while (true) {
       term.innerHTML = "";
       const rendered = [];
+      const cmd = "soloenv up --protect --ttl 4h";
 
-      // Type the first command line character by character.
-      const cmd = "soloenv up";
       for (let i = 0; i <= cmd.length; i++) {
-        const typed = `<span class="t-prompt">$</span> ${cmd.slice(0, i)}`;
-        term.innerHTML = typed + cursor;
-        await sleep(55);
+        term.innerHTML = `<span class="t-prompt">$</span> ${cmd.slice(0, i)}${cursor}`;
+        await sleep(42);
       }
       rendered.push(lines[0].html);
 
-      // Reveal remaining lines progressively.
       for (let i = 1; i < lines.length; i++) {
         rendered.push(lines[i].html);
         term.innerHTML = rendered.join("\n") + cursor;
-        await sleep(lines[i].html === "" ? 120 : 360);
+        await sleep(lines[i].html === "" ? 100 : 320);
       }
 
-      term.innerHTML = rendered.join("\n") + cursor;
-      await sleep(6000);
+      await sleep(5500);
     }
   }
 
   if (prefersReducedMotion) {
-    renderInstant();
+    term.innerHTML = lines.map((l) => l.html).join("\n");
   } else {
     run();
   }

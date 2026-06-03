@@ -5,20 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="SoloEnv gives solo devs a public staging URL from one command. Run soloenv up, share a link in seconds, tear it down when you are done. No DevOps, no cloud account."
+      content="SoloEnv gives solo devs a public staging URL from one command. Run soloenv up, share a link in seconds, tear it down when you are done."
     />
     <meta name="theme-color" content="#0b0d13" />
-
-    <!-- Open Graph / social preview -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="SoloEnv — one-command ephemeral staging for solo devs" />
     <meta
       property="og:description"
-      content="Run soloenv up and get a shareable staging URL in seconds. Spin up on demand, tear down when you are done."
+      content="Run soloenv up and get a shareable staging URL in seconds. Any Docker app. No cloud account."
     />
     <meta name="twitter:card" content="summary_large_image" />
-
-    <title>SoloEnv — Ephemeral staging for solo devs, in one command</title>
+    <title>SoloEnv — Ephemeral staging for solo devs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -30,7 +27,13 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Sticky nav -->
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="bg-orbs" aria-hidden="true">
+      <span class="orb orb-a"></span>
+      <span class="orb orb-b"></span>
+      <span class="orb orb-c"></span>
+    </div>
+
     <nav class="nav" aria-label="Primary">
       <div class="nav-inner">
         <a class="logo" href="#top" aria-label="SoloEnv home">
@@ -42,11 +45,16 @@
           </span>
           Solo<span class="logo-accent">Env</span>
         </a>
-        <div class="nav-links">
+        <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu">
+          <span class="sr-only">Menu</span>
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="navMenu">
           <a href="#how">How it works</a>
-          <a href="#why">Why</a>
-          <a href="#faq">FAQ</a>
-          <a class="nav-cta" href="#waitlist" data-waitlist role="button">Join the waitlist</a>
+          <a href="#compare">Compare</a>
+          <a href="#why">Features</a>
+          <a href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">GitHub</a>
+          <a class="nav-cta" href="#waitlist" data-waitlist role="button">Join waitlist</a>
         </div>
       </div>
     </nav>
@@ -54,23 +62,23 @@
     <span id="top"></span>
 
     <main id="main">
-      <!-- Hero -->
       <header class="hero">
-        <div class="hero-glow" aria-hidden="true"></div>
         <div class="container hero-grid">
           <div class="hero-copy">
-            <p class="badge">
-              <span class="badge-dot" aria-hidden="true"></span>
-              Pre-launch · validating interest
-            </p>
+            <div class="badge-row">
+              <p class="badge badge-live">
+                <span class="badge-dot" aria-hidden="true"></span>
+                CLI v0.2 live
+              </p>
+              <p class="badge badge-soft">Pre-launch validation</p>
+            </div>
             <h1>
-              A public staging URL,<br />
-              from <span class="grad">one command.</span>
+              Staging URL in<br />
+              <span class="grad">one command.</span>
             </h1>
             <p class="lead">
-              You ship features fast — but realistic staging is still a weekend
-              project. SoloEnv spins up your Docker app and hands you a shareable
-              URL in seconds. Tear it down when you are done.
+              Run <code>soloenv up</code> on any Docker project. Get a password-protected
+              public link in seconds. Tear it down when you are done — nothing left running.
             </p>
 
             <div class="hero-cta">
@@ -78,91 +86,141 @@
                 Join the waitlist
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </a>
-              <a class="btn-ghost" href="#how">See how it works</a>
+              <a class="btn-ghost" href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">
+                View on GitHub
+              </a>
             </div>
 
-            <p class="hero-note">
-              Early access · no spam · no credit card · validation phase
-            </p>
+            <ul class="hero-checks">
+              <li>No cloud account</li>
+              <li>Any Docker app</li>
+              <li>Free quick tunnel</li>
+            </ul>
           </div>
 
-          <!-- Animated terminal demo -->
-          <div class="terminal" role="img" aria-label="Terminal demo: running soloenv up produces a public staging URL">
-            <div class="terminal-bar">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-              <span class="terminal-title">~/my-app — soloenv</span>
+          <div class="hero-visual">
+            <div class="terminal tilt" role="img" aria-label="Terminal demo: soloenv up produces a public staging URL">
+              <div class="terminal-bar">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">~/my-app — zsh</span>
+                <span class="terminal-live">LIVE</span>
+              </div>
+              <pre class="terminal-body"><code id="term"></code></pre>
             </div>
-            <pre class="terminal-body"><code id="term"></code></pre>
+
+            <div class="url-card float-card" aria-hidden="true">
+              <div class="url-card-head">
+                <span class="url-card-dot"></span>
+                <span>Share this link</span>
+              </div>
+              <p class="url-card-link">calm-river-1234.trycloudflare.com</p>
+              <div class="url-card-meta">
+                <span class="chip chip-green">Protected</span>
+                <span class="chip chip-dim">TTL 4h</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- quick stat strip -->
         <div class="container">
           <ul class="stat-strip" aria-label="At a glance">
-            <li><strong>&lt; 30s</strong><span>to a live URL</span></li>
-            <li><strong>1</strong><span>command</span></li>
-            <li><strong>$0</strong><span>cloud account</span></li>
-            <li><strong>0</strong><span>servers to babysit</span></li>
+            <li class="reveal">
+              <span class="stat-icon" aria-hidden="true">&#9889;</span>
+              <strong data-count="30">&lt;30s</strong>
+              <span>to a live URL</span>
+            </li>
+            <li class="reveal">
+              <span class="stat-icon" aria-hidden="true">&#9000;</span>
+              <strong>1</strong>
+              <span>command</span>
+            </li>
+            <li class="reveal">
+              <span class="stat-icon" aria-hidden="true">&#128176;</span>
+              <strong>$0</strong>
+              <span>cloud account</span>
+            </li>
+            <li class="reveal">
+              <span class="stat-icon" aria-hidden="true">&#128274;</span>
+              <strong>Auth</strong>
+              <span>built in</span>
+            </li>
           </ul>
         </div>
       </header>
 
-      <!-- The pain -->
-      <section class="section" aria-labelledby="pain-heading">
-        <div class="container narrow">
-          <p class="eyebrow">The problem</p>
-          <h2 id="pain-heading">Production is not a staging environment.</h2>
-          <p class="section-lead">
-            Solo developers building web apps with Docker often skip staging
-            entirely. The first place a feature meets the real world is
-            production — and your users.
-          </p>
-          <p class="section-lead">
-            When you do try to stage, the blockers are always the same: cost,
-            time, and complexity. Wiring hosts, secrets, and teardown before you
-            even have paying users is a detour you can't afford.
-          </p>
+      <section class="section section-pain" aria-labelledby="pain-heading">
+        <div class="container pain-grid">
+          <div class="pain-copy reveal">
+            <p class="eyebrow">The problem</p>
+            <h2 id="pain-heading">Production is not a staging environment.</h2>
+            <p class="section-lead">
+              Solo devs skip staging because wiring hosts, tunnels, and teardown is a
+              weekend project you cannot afford before paying users exist.
+            </p>
+            <p class="section-lead">
+              So the first time a feature meets the real world is often <em>production</em>.
+            </p>
+          </div>
+          <div class="pain-visual reveal">
+            <div class="pain-card pain-bad">
+              <span class="pain-label">Without SoloEnv</span>
+              <ul>
+                <li>Skip staging entirely</li>
+                <li>Ship blind to prod</li>
+                <li>Weekend infra projects</li>
+                <li>ngrok tabs left open</li>
+              </ul>
+            </div>
+            <div class="pain-arrow" aria-hidden="true">&#8594;</div>
+            <div class="pain-card pain-good">
+              <span class="pain-label">With SoloEnv</span>
+              <ul>
+                <li><code>soloenv up</code> in 30 seconds</li>
+                <li>Share link + password</li>
+                <li>Auto teardown with TTL</li>
+                <li><code>soloenv down</code> — gone</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- How it works -->
       <section class="section" id="how" aria-labelledby="how-heading">
         <div class="container">
           <p class="eyebrow center">How it works</p>
-          <h2 id="how-heading" class="center">Three steps. No DevOps detour.</h2>
-          <ol class="steps">
-            <li class="step reveal">
-              <span class="step-num">1</span>
-              <h3>Run one command</h3>
-              <p>
-                From your project folder, run
-                <code>soloenv up</code>. It uses the Docker workflow you already
-                have — compose file or Dockerfile.
-              </p>
-            </li>
-            <li class="step reveal">
-              <span class="step-num">2</span>
-              <h3>Get a shareable URL</h3>
-              <p>
-                SoloEnv starts your app and opens a secure tunnel, then prints a
-                public <code>https://</code> link you can send to anyone.
-              </p>
-            </li>
-            <li class="step reveal">
-              <span class="step-num">3</span>
-              <h3>Tear it down</h3>
-              <p>
-                Done reviewing? <code>soloenv down</code> stops everything and
-                cleans up. Nothing left running, nothing to pay for.
-              </p>
-            </li>
-          </ol>
+          <h2 id="how-heading" class="center">Four steps. Zero DevOps.</h2>
+
+          <div class="pipeline reveal">
+            <div class="pipe-step">
+              <div class="pipe-icon">1</div>
+              <h3>soloenv up</h3>
+              <p>Detects compose or Dockerfile</p>
+            </div>
+            <div class="pipe-line" aria-hidden="true"></div>
+            <div class="pipe-step">
+              <div class="pipe-icon pipe-icon-blue">2</div>
+              <h3>Docker runs</h3>
+              <p>Build + start your stack</p>
+            </div>
+            <div class="pipe-line" aria-hidden="true"></div>
+            <div class="pipe-step">
+              <div class="pipe-icon pipe-icon-cyan">3</div>
+              <h3>Tunnel opens</h3>
+              <p>Cloudflare quick tunnel</p>
+            </div>
+            <div class="pipe-line" aria-hidden="true"></div>
+            <div class="pipe-step">
+              <div class="pipe-icon pipe-icon-grad">4</div>
+              <h3>URL is live</h3>
+              <p>QR, clipboard, share</p>
+            </div>
+          </div>
 
           <div class="copy-cmd reveal">
             <span class="copy-prompt">$</span>
-            <code id="copy-target">soloenv up</code>
+            <code id="copy-target">soloenv up --detach --protect --ttl 4h</code>
             <button class="copy-btn" id="copyBtn" type="button" aria-label="Copy command">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               <span class="copy-label">Copy</span>
@@ -171,142 +229,134 @@
         </div>
       </section>
 
-      <!-- Why / features -->
-      <section class="section" id="why" aria-labelledby="why-heading">
+      <section class="section section-compare" id="compare" aria-labelledby="compare-heading">
         <div class="container">
-          <p class="eyebrow center">Why SoloEnv</p>
-          <h2 id="why-heading" class="center">Built for one-person teams.</h2>
-          <div class="cards">
-            <article class="feature reveal">
-              <span class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              </span>
-              <h3>Fast by default</h3>
-              <p>Spin up on demand and get a link in seconds. No build queues, no waiting on a platform team.</p>
-            </article>
-            <article class="feature reveal">
-              <span class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              </span>
-              <h3>No servers to babysit</h3>
-              <p>Environments are ephemeral. There's nothing long-lived to patch, monitor, or forget to shut off.</p>
-            </article>
-            <article class="feature reveal">
-              <span class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-              </span>
-              <h3>Your Docker workflow</h3>
-              <p>Works with the <code>compose.yaml</code> or <code>Dockerfile</code> you already use. No rewrites, no new config language.</p>
-            </article>
-            <article class="feature reveal">
-              <span class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-              </span>
-              <h3>No DevOps tax</h3>
-              <p>No hosts to wire, no secrets manager to set up, no cloud bill to watch. One command in, one command out.</p>
-            </article>
-            <article class="feature reveal">
-              <span class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-6-6-6"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-              </span>
-              <h3>Made for solo devs</h3>
-              <p>Designed for one-person teams — indie hackers, freelancers, and solo founders — not platform engineers.</p>
-            </article>
-            <article class="feature reveal">
-              <span class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              </span>
-              <h3>Password-protected links</h3>
-              <p>Share with clients safely — <code>--protect</code> adds HTTP basic auth so strangers cannot browse your WIP app.</p>
-            </article>
-            <article class="feature reveal soon">
-              <span class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
-              </span>
-              <h3>PR previews <span class="pill">beta</span></h3>
-              <p>GitHub Action template posts a preview URL on every pull request — with optional <code>--ttl</code> auto-expire.</p>
-            </article>
+          <p class="eyebrow center">Compare</p>
+          <h2 id="compare-heading" class="center">Tunnel-first staging for Docker backends.</h2>
+          <div class="compare-table reveal">
+            <div class="compare-row compare-head">
+              <span></span>
+              <span class="compare-highlight">SoloEnv</span>
+              <span>ngrok</span>
+              <span>Vercel</span>
+            </div>
+            <div class="compare-row"><span>Any Docker app</span><span class="yes">&#10003;</span><span class="partial">Tunnel only</span><span class="no">&#10007;</span></div>
+            <div class="compare-row"><span>No cloud account</span><span class="yes">&#10003;</span><span class="partial">Limited</span><span class="no">&#10007;</span></div>
+            <div class="compare-row"><span>Password on link</span><span class="yes">&#10003;</span><span class="partial">Paid</span><span class="partial">Limited</span></div>
+            <div class="compare-row"><span>Auto teardown</span><span class="yes">&#10003;</span><span class="no">&#10007;</span><span class="yes">&#10003;</span></div>
+            <div class="compare-row"><span>Full compose stack</span><span class="yes">&#10003;</span><span class="no">&#10007;</span><span class="no">&#10007;</span></div>
           </div>
         </div>
       </section>
 
-      <!-- CTA -->
+      <section class="section" id="why" aria-labelledby="why-heading">
+        <div class="container">
+          <p class="eyebrow center">Features</p>
+          <h2 id="why-heading" class="center">Everything a solo dev needs. Nothing a platform team would.</h2>
+          <div class="cards">
+            <article class="feature reveal">
+              <span class="feature-icon fi-green" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </span>
+              <h3>One command</h3>
+              <p><code>soloenv up</code> builds, runs, and exposes your app. No YAML rabbit holes.</p>
+            </article>
+            <article class="feature reveal">
+              <span class="feature-icon fi-blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </span>
+              <h3>Your Docker workflow</h3>
+              <p>Compose or Dockerfile — no rewrites, no framework lock-in.</p>
+            </article>
+            <article class="feature reveal">
+              <span class="feature-icon fi-amber" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <h3>Password protection</h3>
+              <p><code>--protect</code> adds HTTP basic auth before anyone hits your WIP app.</p>
+            </article>
+            <article class="feature reveal">
+              <span class="feature-icon fi-purple" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
+              <h3>Auto teardown</h3>
+              <p><code>--ttl 4h</code> expires the environment. No zombie tunnels overnight.</p>
+            </article>
+            <article class="feature reveal">
+              <span class="feature-icon fi-cyan" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </span>
+              <h3>Detached mode</h3>
+              <p>Close your terminal — staging keeps running until you say <code>down</code>.</p>
+            </article>
+            <article class="feature reveal">
+              <span class="feature-icon fi-green" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
+              </span>
+              <h3>PR previews <span class="pill">beta</span></h3>
+              <p>Drop-in GitHub Action posts a preview URL on every pull request.</p>
+            </article>
+          </div>
+
+          <div class="stack-strip reveal">
+            <span>Works with</span>
+            <ul>
+              <li>Django</li>
+              <li>Rails</li>
+              <li>Laravel</li>
+              <li>FastAPI</li>
+              <li>Next.js</li>
+              <li>Any Docker</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="waitlist" aria-labelledby="cta-heading">
         <div class="container">
           <div class="cta-block reveal">
-            <h2 id="cta-heading">Want this? Tell us.</h2>
+            <div class="cta-glow" aria-hidden="true"></div>
+            <h2 id="cta-heading">Want early access?</h2>
             <p class="cta-sub">
-              We are measuring demand before we write the CLI. Add your email and
-              we'll bring you in early.
+              The CLI is live — we are validating demand and polishing the experience.
+              Join the waitlist for updates and invite-only demos.
             </p>
             <a class="btn-primary big" href="#" data-waitlist role="button">
               Join the waitlist
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
-            <p class="cta-note">
-              A short Google Form — email plus optional role and stage. Early
-              access · no spam.
-            </p>
+            <p class="cta-note">Short Google Form · email + optional role · no spam</p>
           </div>
-
-          <p class="disclaimer">
-            Not available yet — we are measuring interest before building. No
-            tool signup, no credit card, no install required to join.
-          </p>
         </div>
       </section>
 
-      <!-- FAQ -->
       <section class="section" id="faq" aria-labelledby="faq-heading">
         <div class="container narrow">
           <p class="eyebrow center">FAQ</p>
           <h2 id="faq-heading" class="center">Questions, answered.</h2>
           <div class="faq">
             <details class="faq-item">
-              <summary>Is SoloEnv live yet?</summary>
+              <summary>Is SoloEnv live?</summary>
               <div class="faq-answer">
-                <p>
-                  Not yet. This page is part of a 2-week validation experiment.
-                  If enough solo devs want it, we build the MVP.
-                </p>
+                <p>Yes — CLI v0.2 is on <a href="https://github.com/fleames/soloenv-cli">GitHub</a>. This page is part of our validation experiment to measure broader demand.</p>
               </div>
             </details>
             <details class="faq-item">
-              <summary>What happens when I join the waitlist?</summary>
+              <summary>How do I install it?</summary>
               <div class="faq-answer">
-                <p>
-                  You complete a short Google Form (email plus optional role and
-                  stage). We may invite a small group for early manual demos.
-                </p>
+                <p>Download from <a href="https://github.com/fleames/soloenv-cli/releases">Releases</a>, or run <code>go install github.com/fleames/soloenv-cli@latest</code>. Requires Docker.</p>
               </div>
             </details>
             <details class="faq-item">
               <summary>Who is this for?</summary>
               <div class="faq-answer">
-                <p>
-                  Solo founders, indie hackers, and freelancers shipping web apps
-                  with Docker who want staging without a platform team.
-                </p>
+                <p>Solo founders, indie hackers, and freelancers shipping web apps with Docker who want staging without a platform team.</p>
               </div>
             </details>
             <details class="faq-item">
-              <summary>How does it give me a public URL?</summary>
+              <summary>Does it cost anything?</summary>
               <div class="faq-answer">
-                <p>
-                  SoloEnv runs your app and opens a secure tunnel to it, then
-                  prints a shareable <code>https://</code> link. No domains to
-                  buy and no inbound ports to open.
-                </p>
-              </div>
-            </details>
-            <details class="faq-item">
-              <summary>Will it cost anything?</summary>
-              <div class="faq-answer">
-                <p>
-                  Pricing isn't set — that's part of what we're validating. The
-                  goal is something a solo dev can justify on day one, with no
-                  cloud account required to get started.
-                </p>
+                <p>SoloEnv is free and open source. Quick tunnels use Cloudflare's free tier — no account required to start.</p>
               </div>
             </details>
           </div>
@@ -317,11 +367,11 @@
     <footer class="footer">
       <div class="container footer-inner">
         <a class="logo" href="#top">Solo<span class="logo-accent">Env</span></a>
-        <nav aria-label="Social links" class="footer-social">
-          <a href="#" aria-disabled="true">Twitter</a>
-          <a href="#" aria-disabled="true">Reddit</a>
+        <nav aria-label="Links" class="footer-social">
+          <a href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">CLI</a>
+          <a href="https://github.com/fleames/soloenv-landing" target="_blank" rel="noopener">Landing</a>
         </nav>
-        <p class="footer-note">© SoloEnv · Experiment 1 — landing page validation</p>
+        <p class="footer-note">MIT · SoloEnv contributors</p>
       </div>
     </footer>
 
