@@ -88,7 +88,7 @@ install_soloenv_cli() {
     return
   fi
 
-  local version arch asset url tmpdir
+  local version arch asset url dl
   version="$(resolve_cli_version)"
   arch="$(detect_arch)"
   asset="soloenv-cli_${version}_linux_${arch}.tar.gz"
@@ -97,12 +97,12 @@ install_soloenv_cli() {
   log "Downloading SoloEnv v${version} (${arch})..."
   need_cmd curl
   need_cmd tar
-  tmpdir="$(mktemp -d)"
-  trap 'rm -rf "$tmpdir"' EXIT
+  dl="$(mktemp -d)"
 
-  curl -fsSL "$url" -o "${tmpdir}/${asset}"
-  tar -xzf "${tmpdir}/${asset}" -C "$tmpdir"
-  as_root install -m 0755 "${tmpdir}/soloenv" "$SOLOENV_BIN"
+  curl -fsSL "$url" -o "${dl}/${asset}"
+  tar -xzf "${dl}/${asset}" -C "$dl"
+  as_root install -m 0755 "${dl}/soloenv" "$SOLOENV_BIN"
+  rm -rf "$dl"
   log "Installed $SOLOENV_BIN ($("$SOLOENV_BIN" version 2>/dev/null || echo "v${version}"))"
 }
 
