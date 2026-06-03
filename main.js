@@ -1,4 +1,9 @@
-import { FORM_URL, WAITLIST_ENDPOINT, GA_MEASUREMENT_ID } from "./config.js";
+import {
+  FORM_URL,
+  WAITLIST_ENDPOINT,
+  GA_MEASUREMENT_ID,
+  DEPLOYED_AT,
+} from "./config.js";
 
 const prefersReducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)"
@@ -170,6 +175,38 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
     }, 1600);
   });
 });
+
+/* ---------- Live uptime counter ---------- */
+(function uptimeCounter() {
+  const wrap = document.getElementById("uptime");
+  const clock = document.getElementById("uptimeClock");
+  if (!wrap || !clock || !DEPLOYED_AT) return;
+
+  const start = new Date(DEPLOYED_AT).getTime();
+  if (Number.isNaN(start)) return;
+
+  const pad = (n) => String(n).padStart(2, "0");
+
+  function render() {
+    let secs = Math.floor((Date.now() - start) / 1000);
+    if (secs < 0) secs = 0;
+    const days = Math.floor(secs / 86400);
+    secs -= days * 86400;
+    const hours = Math.floor(secs / 3600);
+    secs -= hours * 3600;
+    const mins = Math.floor(secs / 60);
+    secs -= mins * 60;
+
+    const parts = [];
+    if (days > 0) parts.push(`${days}d`);
+    parts.push(`${pad(hours)}h`, `${pad(mins)}m`, `${pad(secs)}s`);
+    clock.textContent = parts.join(" ");
+  }
+
+  wrap.hidden = false;
+  render();
+  setInterval(render, 1000);
+})();
 
 /* ---------- Scroll reveal ---------- */
 const revealEls = document.querySelectorAll(".reveal");

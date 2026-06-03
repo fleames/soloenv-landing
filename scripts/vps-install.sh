@@ -12,6 +12,7 @@
 #   SOLOENV_EXTRA_FLAGS="..."  Extra flags passed to soloenv up
 #   SKIP_DOCKER=1              Skip Docker install check
 #   SKIP_UP=1                  Clone + install only, do not run soloenv up
+#   SKIP_DEPLOY_STAMP=1        Don't rewrite DEPLOYED_AT (uptime counter) in config.js
 
 set -euo pipefail
 
@@ -133,6 +134,22 @@ check_config() {
   fi
 }
 
+stamp_deployed_at() {
+  # Keep the live "uptime" counter accurate: write the current UTC time into
+  # config.js right before launch. Set SKIP_DEPLOY_STAMP=1 to leave it as-is.
+  if [[ "${SKIP_DEPLOY_STAMP:-0}" == "1" ]]; then
+    return
+  fi
+  local cfg="$SOLOENV_DIR/config.js" ts
+  [[ -f "$cfg" ]] || return
+  ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  if sed -i -E "s#(export const DEPLOYED_AT = )\"[^\"]*\";#\1\"${ts}\";#" "$cfg" 2>/dev/null; then
+    log "Set uptime start (DEPLOYED_AT) to ${ts}"
+  else
+    warn "Could not stamp DEPLOYED_AT in config.js — uptime counter will use its default"
+  fi
+}
+
 run_soloenv_up() {
   if [[ "${SKIP_UP:-0}" == "1" ]]; then
     log "Skipping soloenv up (SKIP_UP=1)"
@@ -142,6 +159,8 @@ run_soloenv_up() {
 
   log "Starting landing page with SoloEnv..."
   cd "$SOLOENV_DIR"
+
+  stamp_deployed_at
 
   # Tear down any previous run in this directory
   if [[ -f .soloenv/state.json ]]; then

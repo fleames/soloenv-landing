@@ -28,3 +28,16 @@ export const FORM_URL =
  * Fires a `waitlist_signup` event on successful submit.
  */
 export const GA_MEASUREMENT_ID = null;
+
+/**
+ * When this SoloEnv environment was started (ISO 8601, UTC recommended).
+ * Powers the live "uptime" counter in the hero — set it to the moment you ran
+ * `soloenv up` on the VPS that serves this page.
+ *
+ * Tip: keep it accurate automatically by injecting the timestamp at deploy time,
+ * e.g. before `soloenv up`:
+ *   sed -i "s/__DEPLOYED_AT__/$(date -u +%Y-%m-%dT%H:%M:%SZ)/" config.js
+ *
+ * Set to null to hide the counter entirely.
+ */
+export const DEPLOYED_AT = "2026-06-01T18:00:00Z";
