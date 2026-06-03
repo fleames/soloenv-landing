@@ -62,6 +62,50 @@ When `GA_MEASUREMENT_ID` is set, `main.js` loads gtag and fires a `waitlist_clic
 
 Dogfood the landing page with [SoloEnv](https://github.com/fleames/soloenv-cli): one command for a public HTTPS URL, optional password, auto teardown.
 
+### One-liner (recommended)
+
+On a fresh Linux VPS (Ubuntu/Debian, amd64 or arm64):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/fleames/soloenv-landing/main/scripts/vps-install.sh | bash
+```
+
+This script will:
+
+1. Install Docker (if missing)
+2. Download the latest [SoloEnv CLI](https://github.com/fleames/soloenv-cli/releases) to `/usr/local/bin/soloenv`
+3. Clone this repo to `/opt/soloenv-landing`
+4. Run `soloenv up --detach --protect --ttl 168h`
+
+Then get your URL and password:
+
+```bash
+cd /opt/soloenv-landing
+soloenv status
+```
+
+**Before sharing publicly**, set your Google Form URL:
+
+```bash
+nano /opt/soloenv-landing/config.js   # replace YOUR_FORM_ID in FORM_URL
+```
+
+Optional environment variables:
+
+```bash
+SOLOENV_DIR=$HOME/soloenv-landing SOLOENV_TTL=72h bash -c "$(curl -fsSL https://raw.githubusercontent.com/fleames/soloenv-landing/main/scripts/vps-install.sh)"
+```
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SOLOENV_DIR` | `/opt/soloenv-landing` | Clone directory |
+| `SOLOENV_VERSION` | latest release | Pin CLI version (e.g. `v0.2.0`) |
+| `SOLOENV_TTL` | `168h` | Auto teardown |
+| `SKIP_UP=1` | — | Install only, don't run `soloenv up` |
+| `SKIP_DOCKER=1` | — | Skip Docker install |
+
+### Manual steps
+
 **On the VPS** (Ubuntu/Debian example):
 
 ```bash
