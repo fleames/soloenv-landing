@@ -1,0 +1,7 @@
+# Copy to soloenv.yml for VPS staging (optional).
+# port: 8088
+# service: web
+# build: false
+# protect: use --protect on CLI or set password below
+# password: change-me
+# ttl: 168h
