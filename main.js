@@ -1,4 +1,4 @@
-import { FORM_URL, GA_MEASUREMENT_ID } from "./config.js";
+import { FORM_URL, WAITLIST_ENDPOINT, GA_MEASUREMENT_ID } from "./config.js";
 
 const prefersReducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)"
@@ -31,31 +31,97 @@ navMenu?.querySelectorAll("a").forEach((link) => {
   });
 });
 
-/* ---------- Waitlist + analytics ---------- */
-function trackWaitlistClick() {
+/* ---------- Analytics helper ---------- */
+function trackSignup(stage) {
   if (typeof window.gtag === "function" && GA_MEASUREMENT_ID) {
-    window.gtag("event", "waitlist_click", {
+    window.gtag("event", "waitlist_signup", {
       event_category: "engagement",
-      event_label: "join_waitlist",
+      event_label: stage || "waitlist",
     });
   }
 }
 
-function openWaitlist() {
-  if (!FORM_URL || FORM_URL.includes("YOUR_FORM_ID")) {
-    alert(
-      "Set FORM_URL in config.js to your published Google Form link before going live."
-    );
-    return;
-  }
-  trackWaitlistClick();
-  window.open(FORM_URL, "_blank", "noopener,noreferrer");
-}
-
-document.querySelectorAll("[data-waitlist]").forEach((el) => {
+/* ---------- Smooth-scroll to the waitlist form ---------- */
+document.querySelectorAll("[data-waitlist-scroll]").forEach((el) => {
   el.addEventListener("click", (e) => {
     e.preventDefault();
-    openWaitlist();
+    const target = document.getElementById("waitlist");
+    target?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
+    setTimeout(() => document.getElementById("emailCta")?.focus(), 500);
+  });
+});
+
+/* ---------- Inline email capture ---------- */
+function setFormMessage(form, text, type) {
+  const msg = form.querySelector("[data-form-msg]");
+  if (!msg) return;
+  msg.textContent = text;
+  msg.classList.remove("ok", "err");
+  if (type) msg.classList.add(type);
+}
+
+async function submitWaitlist(form, stage) {
+  const input = form.querySelector('input[type="email"]');
+  const email = input?.value.trim();
+  if (!email || !input.checkValidity()) {
+    setFormMessage(form, "Please enter a valid email address.", "err");
+    input?.focus();
+    return;
+  }
+
+  const btn = form.querySelector("button[type=submit]");
+  const original = btn?.innerHTML;
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Joining…";
+  }
+  setFormMessage(form, "", null);
+
+  const restore = () => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = original;
+    }
+  };
+
+  // No endpoint configured yet: fall back to the Google Form, if present.
+  if (!WAITLIST_ENDPOINT || WAITLIST_ENDPOINT.includes("YOUR_")) {
+    if (FORM_URL && !FORM_URL.includes("YOUR_FORM_ID")) {
+      trackSignup(stage);
+      window.open(FORM_URL, "_blank", "noopener,noreferrer");
+      setFormMessage(form, "Opening the sign-up form…", "ok");
+    } else {
+      setFormMessage(
+        form,
+        "Set WAITLIST_ENDPOINT (or FORM_URL) in config.js before launch.",
+        "err"
+      );
+    }
+    restore();
+    return;
+  }
+
+  try {
+    const res = await fetch(WAITLIST_ENDPOINT, {
+      method: "POST",
+      headers: { Accept: "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify({ email, source: stage || "waitlist" }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    trackSignup(stage);
+    form.reset();
+    setFormMessage(form, "You're on the list — check your inbox to confirm. 🎉", "ok");
+  } catch (err) {
+    setFormMessage(form, "Something went wrong. Email hi@soloenv.dev and we'll add you.", "err");
+  } finally {
+    restore();
+  }
+}
+
+document.querySelectorAll("#waitlistFormHero, #waitlistFormCta").forEach((form) => {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    submitWaitlist(form, form.id === "waitlistFormCta" ? "cta" : "hero");
   });
 });
 
@@ -74,11 +140,8 @@ if (GA_MEASUREMENT_ID) {
   gtag("config", GA_MEASUREMENT_ID);
 }
 
-/* ---------- Copy command ---------- */
-const copyBtn = document.getElementById("copyBtn");
-copyBtn?.addEventListener("click", async () => {
-  const text = document.getElementById("copy-target")?.textContent?.trim();
-  if (!text) return;
+/* ---------- Copy buttons (install + command) ---------- */
+async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text);
   } catch {
@@ -89,14 +152,23 @@ copyBtn?.addEventListener("click", async () => {
     document.execCommand("copy");
     ta.remove();
   }
-  const label = copyBtn.querySelector(".copy-label");
-  const original = label?.textContent ?? "";
-  copyBtn.classList.add("copied");
-  if (label) label.textContent = "Copied";
-  setTimeout(() => {
-    copyBtn.classList.remove("copied");
-    if (label) label.textContent = original || "Copy";
-  }, 1600);
+}
+
+document.querySelectorAll(".copy-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const targetId = btn.getAttribute("data-copy-target") || "copy-target";
+    const text = document.getElementById(targetId)?.textContent?.trim();
+    if (!text) return;
+    await copyText(text);
+    const label = btn.querySelector(".copy-label");
+    const original = label?.textContent ?? "";
+    btn.classList.add("copied");
+    if (label) label.textContent = "Copied";
+    setTimeout(() => {
+      btn.classList.remove("copied");
+      if (label) label.textContent = original || "Copy";
+    }, 1600);
+  });
 });
 
 /* ---------- Scroll reveal ---------- */

@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="SoloEnv gives solo devs a public staging URL from one command. Run soloenv up, share a link in seconds, tear it down when you are done."
+      content="SoloEnv spins up a password-protected staging URL for any Docker app with one command. soloenv up builds, runs, and shares your real compose stack — auto-expiring, no cloud account. Open source."
     />
+    <meta name="keywords" content="docker staging environment, docker preview environments, staging for docker apps, temporary staging environment, share docker app url, ngrok alternative, cloudflare tunnel alternative, ephemeral staging" />
     <meta name="theme-color" content="#0b0d13" />
+    <link rel="canonical" href="https://soloenv.dev/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="SoloEnv — one-command ephemeral staging for solo devs" />
+    <meta property="og:title" content="SoloEnv — One-command staging URLs for Docker apps" />
     <meta
       property="og:description"
-      content="Run soloenv up and get a shareable staging URL in seconds. Any Docker app. No cloud account."
+      content="Run soloenv up and get a password-protected, auto-expiring public URL for your real Docker stack in under 30 seconds. No cloud account. Open source."
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>SoloEnv — Ephemeral staging for solo devs</title>
+    <meta name="twitter:title" content="SoloEnv — One-command staging URLs for Docker apps" />
+    <meta name="twitter:description" content="soloenv up → a password-protected, auto-expiring staging URL for any Docker app. No cloud account. Open source." />
+    <title>SoloEnv — One-Command Staging Environments for Docker Apps</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -23,6 +27,19 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "SoloEnv",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "macOS, Linux, Windows",
+        "description": "One-command ephemeral staging environments for Docker apps. soloenv up builds, runs, and exposes your stack behind a password-protected, auto-expiring public URL.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "license": "https://opensource.org/licenses/MIT",
+        "url": "https://github.com/fleames/soloenv-cli"
+      }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -51,10 +68,11 @@
         </button>
         <div class="nav-links" id="navMenu">
           <a href="#how">How it works</a>
+          <a href="#why-not">Why SoloEnv</a>
           <a href="#compare">Compare</a>
-          <a href="#why">Features</a>
+          <a href="#faq">FAQ</a>
           <a href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">GitHub</a>
-          <a class="nav-cta" href="#waitlist" data-waitlist role="button">Join waitlist</a>
+          <a class="nav-cta" href="#waitlist" data-waitlist-scroll role="button">Get early access</a>
         </div>
       </div>
     </nav>
@@ -68,38 +86,56 @@
             <div class="badge-row">
               <p class="badge badge-live">
                 <span class="badge-dot" aria-hidden="true"></span>
-                CLI v0.2 live
+                Open source · CLI v0.2 live
               </p>
-              <p class="badge badge-soft">Pre-launch validation</p>
+              <p class="badge badge-soft">MIT licensed</p>
             </div>
             <h1>
-              Staging URL in<br />
-              <span class="grad">one command.</span>
+              Staging for Docker apps,<br />
+              <span class="grad">in one command.</span>
             </h1>
             <p class="lead">
-              Run <code>soloenv up</code> on any Docker project. Get a password-protected
-              public link in seconds. Tear it down when you are done — nothing left running.
+              <code>soloenv up</code> builds and runs your real Docker stack, then hands you a
+              password-protected public URL in under 30 seconds. It auto-expires when you are
+              done — no cloud account, no dashboards, no zombie tunnels.
             </p>
 
-            <div class="hero-cta">
-              <a class="btn-primary" href="#waitlist" data-waitlist role="button">
-                Join the waitlist
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </a>
-              <a class="btn-ghost" href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">
-                View on GitHub
-              </a>
+            <div class="quickstart" aria-label="Install and run">
+              <div class="qs-row">
+                <span class="copy-prompt">$</span>
+                <code id="install-target">go install github.com/fleames/soloenv-cli@latest</code>
+                <button class="copy-btn" data-copy-target="install-target" type="button" aria-label="Copy install command">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span class="copy-label">Copy</span>
+                </button>
+              </div>
+              <div class="qs-row qs-row-dim">
+                <span class="copy-prompt">$</span>
+                <code>cd my-app &amp;&amp; soloenv up</code>
+              </div>
             </div>
 
+            <div class="hero-cta">
+              <a class="btn-primary" href="https://github.com/fleames/soloenv-cli/releases" target="_blank" rel="noopener">
+                Download a binary
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </a>
+              <a class="btn-ghost" href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">View on GitHub</a>
+            </div>
+            <p class="hero-subnote">
+              Free &amp; open source · works with any Docker app · no cloud account.
+              Building a hosted version — <a href="#waitlist" data-waitlist-scroll>get early access &#8594;</a>
+            </p>
+
             <ul class="hero-checks">
-              <li>No cloud account</li>
-              <li>Any Docker app</li>
-              <li>Free quick tunnel</li>
+              <li>No Go? Grab a prebuilt binary</li>
+              <li>macOS · Linux · Windows</li>
+              <li>MIT licensed</li>
             </ul>
           </div>
 
           <div class="hero-visual">
-            <div class="terminal tilt" role="img" aria-label="Terminal demo: soloenv up produces a public staging URL">
+            <div class="terminal tilt" role="img" aria-label="Terminal demo: soloenv up produces a password-protected public staging URL">
               <div class="terminal-bar">
                 <span class="dot red"></span>
                 <span class="dot yellow"></span>
@@ -128,7 +164,7 @@
           <ul class="stat-strip" aria-label="At a glance">
             <li class="reveal">
               <span class="stat-icon" aria-hidden="true">&#9889;</span>
-              <strong data-count="30">&lt;30s</strong>
+              <strong>&lt;30s</strong>
               <span>to a live URL</span>
             </li>
             <li class="reveal">
@@ -150,37 +186,66 @@
         </div>
       </header>
 
+      <section class="proof-strip-wrap" aria-label="Why you can trust SoloEnv">
+        <div class="container">
+          <ul class="proof-strip reveal">
+            <li>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              <span>Open source on GitHub</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Your code never leaves your machine</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <span>Single Go binary, no daemon</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>HTTPS + auth by default</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span>MIT licensed — yours to fork</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
       <section class="section section-pain" aria-labelledby="pain-heading">
         <div class="container pain-grid">
           <div class="pain-copy reveal">
             <p class="eyebrow">The problem</p>
-            <h2 id="pain-heading">Production is not a staging environment.</h2>
+            <h2 id="pain-heading">"It works on my machine" isn't a review link.</h2>
             <p class="section-lead">
-              Solo devs skip staging because wiring hosts, tunnels, and teardown is a
-              weekend project you cannot afford before paying users exist.
+              You finished the feature. Now a client, a teammate, or a tester needs to click it —
+              and your only options are pushing to prod, babysitting an <code>ngrok</code> tab, or
+              spending a weekend wiring a staging box.
             </p>
             <p class="section-lead">
-              So the first time a feature meets the real world is often <em>production</em>.
+              So staging gets skipped, and the first place real traffic meets your code is
+              <em>production</em>.
             </p>
           </div>
           <div class="pain-visual reveal">
             <div class="pain-card pain-bad">
-              <span class="pain-label">Without SoloEnv</span>
+              <span class="pain-label">The usual workaround</span>
               <ul>
-                <li>Skip staging entirely</li>
-                <li>Ship blind to prod</li>
-                <li>Weekend infra projects</li>
-                <li>ngrok tabs left open</li>
+                <li>Push straight to prod and hope</li>
+                <li><code>ngrok</code> tab open all afternoon</li>
+                <li>Hand-built staging VPS to maintain</li>
+                <li>"Can you pull my branch and run it?"</li>
               </ul>
             </div>
             <div class="pain-arrow" aria-hidden="true">&#8594;</div>
             <div class="pain-card pain-good">
               <span class="pain-label">With SoloEnv</span>
               <ul>
-                <li><code>soloenv up</code> in 30 seconds</li>
-                <li>Share link + password</li>
-                <li>Auto teardown with TTL</li>
-                <li><code>soloenv down</code> — gone</li>
+                <li><code>soloenv up</code> — live in ~30s</li>
+                <li>Send a link + password</li>
+                <li>Auto-teardown with <code>--ttl</code></li>
+                <li><code>soloenv down</code> — gone, no trace</li>
               </ul>
             </div>
           </div>
@@ -190,7 +255,11 @@
       <section class="section" id="how" aria-labelledby="how-heading">
         <div class="container">
           <p class="eyebrow center">How it works</p>
-          <h2 id="how-heading" class="center">Four steps. Zero DevOps.</h2>
+          <h2 id="how-heading" class="center">One command builds, runs, and shares your stack.</h2>
+          <p class="section-lead center mx-auto">
+            No YAML to learn, no DNS to configure, no account to create. SoloEnv reads your existing
+            Docker project and does the rest.
+          </p>
 
           <div class="pipeline reveal">
             <div class="pipe-step">
@@ -202,19 +271,19 @@
             <div class="pipe-step">
               <div class="pipe-icon pipe-icon-blue">2</div>
               <h3>Docker runs</h3>
-              <p>Build + start your stack</p>
+              <p>Builds &amp; starts your stack</p>
             </div>
             <div class="pipe-line" aria-hidden="true"></div>
             <div class="pipe-step">
               <div class="pipe-icon pipe-icon-cyan">3</div>
               <h3>Tunnel opens</h3>
-              <p>Cloudflare quick tunnel</p>
+              <p>HTTPS Cloudflare quick tunnel</p>
             </div>
             <div class="pipe-line" aria-hidden="true"></div>
             <div class="pipe-step">
               <div class="pipe-icon pipe-icon-grad">4</div>
               <h3>URL is live</h3>
-              <p>QR, clipboard, share</p>
+              <p>Password-protected, shareable</p>
             </div>
           </div>
 
@@ -229,72 +298,58 @@
         </div>
       </section>
 
-      <section class="section section-compare" id="compare" aria-labelledby="compare-heading">
-        <div class="container">
-          <p class="eyebrow center">Compare</p>
-          <h2 id="compare-heading" class="center">Tunnel-first staging for Docker backends.</h2>
-          <div class="compare-table reveal">
-            <div class="compare-row compare-head">
-              <span></span>
-              <span class="compare-highlight">SoloEnv</span>
-              <span>ngrok</span>
-              <span>Vercel</span>
-            </div>
-            <div class="compare-row"><span>Any Docker app</span><span class="yes">&#10003;</span><span class="partial">Tunnel only</span><span class="no">&#10007;</span></div>
-            <div class="compare-row"><span>No cloud account</span><span class="yes">&#10003;</span><span class="partial">Limited</span><span class="no">&#10007;</span></div>
-            <div class="compare-row"><span>Password on link</span><span class="yes">&#10003;</span><span class="partial">Paid</span><span class="partial">Limited</span></div>
-            <div class="compare-row"><span>Auto teardown</span><span class="yes">&#10003;</span><span class="no">&#10007;</span><span class="yes">&#10003;</span></div>
-            <div class="compare-row"><span>Full compose stack</span><span class="yes">&#10003;</span><span class="no">&#10007;</span><span class="no">&#10007;</span></div>
-          </div>
-        </div>
-      </section>
-
       <section class="section" id="why" aria-labelledby="why-heading">
         <div class="container">
           <p class="eyebrow center">Features</p>
-          <h2 id="why-heading" class="center">Everything a solo dev needs. Nothing a platform team would.</h2>
-          <div class="cards">
+          <h2 id="why-heading" class="center">Built to share work, not to run a platform.</h2>
+          <div class="cards feature-rich">
             <article class="feature reveal">
               <span class="feature-icon fi-green" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               </span>
-              <h3>One command</h3>
-              <p><code>soloenv up</code> builds, runs, and exposes your app. No YAML rabbit holes.</p>
+              <h3>Ship a link, not a deploy</h3>
+              <p><code>soloenv up</code> detects your <code>compose.yaml</code> or <code>Dockerfile</code>, builds it, runs it, and exposes it. One command, no config files.</p>
+              <p class="feature-use"><span>Use case</span> Send a client today's build before standup — without a deploy pipeline.</p>
             </article>
             <article class="feature reveal">
               <span class="feature-icon fi-blue" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
               </span>
-              <h3>Your Docker workflow</h3>
-              <p>Compose or Dockerfile — no rewrites, no framework lock-in.</p>
+              <h3>Your whole stack, not one port</h3>
+              <p>Runs your real compose project — web + database + workers — exactly as defined. No framework lock-in, no rewrites.</p>
+              <p class="feature-use"><span>Use case</span> QA the full app against its real Postgres and Redis, just like production.</p>
             </article>
             <article class="feature reveal">
               <span class="feature-icon fi-amber" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </span>
-              <h3>Password protection</h3>
-              <p><code>--protect</code> adds HTTP basic auth before anyone hits your WIP app.</p>
+              <h3>Locked by default</h3>
+              <p><code>--protect</code> puts HTTP basic auth in front of your app via a built-in reverse proxy. The tunnel only ever sees the protected entrance.</p>
+              <p class="feature-use"><span>Use case</span> Share a work-in-progress without it getting indexed, scraped, or leaked.</p>
             </article>
             <article class="feature reveal">
               <span class="feature-icon fi-purple" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </span>
-              <h3>Auto teardown</h3>
-              <p><code>--ttl 4h</code> expires the environment. No zombie tunnels overnight.</p>
+              <h3>Expires so you don't have to remember</h3>
+              <p><code>--ttl 4h</code> tears the whole environment down on a timer — containers, proxy, and tunnel all stop together.</p>
+              <p class="feature-use"><span>Use case</span> A demo link that dies after the call. No zombie tunnels running overnight.</p>
             </article>
             <article class="feature reveal">
               <span class="feature-icon fi-cyan" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
               </span>
-              <h3>Detached mode</h3>
-              <p>Close your terminal — staging keeps running until you say <code>down</code>.</p>
+              <h3>Close the laptop, keep the link</h3>
+              <p><code>--detach</code> runs everything in the background and survives your terminal closing. <code>soloenv down</code> stops it cleanly.</p>
+              <p class="feature-use"><span>Use case</span> Leave staging up on a cheap VPS for the weekend while testers poke at it.</p>
             </article>
             <article class="feature reveal">
               <span class="feature-icon fi-green" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
               </span>
-              <h3>PR previews <span class="pill">beta</span></h3>
-              <p>Drop-in GitHub Action posts a preview URL on every pull request.</p>
+              <h3>A preview URL on every PR <span class="pill">beta</span></h3>
+              <p>A drop-in GitHub Action comments a live preview URL on each pull request, so reviewers click instead of pulling the branch.</p>
+              <p class="feature-use"><span>Use case</span> Reviewers test the running app from the PR — no local checkout required.</p>
             </article>
           </div>
 
@@ -305,27 +360,282 @@
               <li>Rails</li>
               <li>Laravel</li>
               <li>FastAPI</li>
-              <li>Next.js</li>
-              <li>Any Docker</li>
+              <li>Node / Next.js</li>
+              <li>Go</li>
+              <li>Any Docker image</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <section class="section" id="waitlist" aria-labelledby="cta-heading">
+      <section class="section section-why-not" id="why-not" aria-labelledby="whynot-heading">
         <div class="container">
+          <p class="eyebrow center">Honest answers</p>
+          <h2 id="whynot-heading" class="center">"Why not just use…?"</h2>
+          <p class="section-lead center mx-auto">
+            Fair question. Here's where each alternative stops and SoloEnv starts.
+          </p>
+
+          <div class="obj-grid reveal">
+            <article class="obj-card">
+              <h3>Why not <span>ngrok</span>?</h3>
+              <p>ngrok tunnels a single port you're <em>already</em> running. SoloEnv builds and runs your whole Docker stack first, then tunnels it, adds basic auth and a TTL, and tears it all down on <code>down</code>. ngrok is a pipe; SoloEnv is the environment behind it.</p>
+            </article>
+            <article class="obj-card">
+              <h3>Why not <span>Cloudflare Tunnel</span>?</h3>
+              <p>SoloEnv uses Cloudflare quick tunnels under the hood — you just skip the named-tunnel setup, DNS records, config files, and credentials. One command instead of a <code>cloudflared</code> config project, plus Docker orchestration, passwords, and auto-expiry on top.</p>
+            </article>
+            <article class="obj-card">
+              <h3>Why not <span>Railway / Render</span>?</h3>
+              <p>Great hosted platforms — but they mean another account, billing, build configuration, and pushing your code to their cloud. SoloEnv runs the exact image on hardware you control and shares it. No vendor build step, no migration, $0 to start.</p>
+            </article>
+            <article class="obj-card">
+              <h3>Why not <span>Vercel previews</span>?</h3>
+              <p>Vercel previews are excellent for frontends and serverless deployed <em>on Vercel</em>. SoloEnv is for full Docker backends — Django + Postgres, Rails + Sidekiq, anything with a database — running anywhere. Different stack, different tool.</p>
+            </article>
+            <article class="obj-card">
+              <h3>Why not just use <span>production</span>?</h3>
+              <p>Because the first time a broken migration or a half-finished feature meets real users shouldn't be in prod. SoloEnv gives you a throwaway, password-protected URL to test the <em>real</em> stack before it ships.</p>
+            </article>
+            <article class="obj-card obj-card-cta">
+              <h3>Still deciding?</h3>
+              <p>The CLI is open source and free. Try it on a real project in five minutes, or grab early access to the hosted version.</p>
+              <div class="obj-actions">
+                <a class="btn-ghost sm" href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">View on GitHub</a>
+                <a class="link-arrow" href="#waitlist" data-waitlist-scroll>Get early access &#8594;</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-compare" id="compare" aria-labelledby="compare-heading">
+        <div class="container">
+          <p class="eyebrow center">Compare</p>
+          <h2 id="compare-heading" class="center">SoloEnv vs. the tools you're already reaching for.</h2>
+          <div class="cmp-scroll reveal">
+            <table class="cmp">
+              <thead>
+                <tr>
+                  <th scope="col">Capability</th>
+                  <th scope="col" class="cmp-me">SoloEnv</th>
+                  <th scope="col">ngrok</th>
+                  <th scope="col">Cloudflare Tunnel</th>
+                  <th scope="col">Railway</th>
+                  <th scope="col">Vercel</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Builds &amp; runs your Docker app</th>
+                  <td class="cmp-me"><span class="yes">Yes</span></td>
+                  <td><span class="no">Tunnel only</span></td>
+                  <td><span class="no">Tunnel only</span></td>
+                  <td><span class="yes">Yes</span></td>
+                  <td><span class="no">Frontend / serverless</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Full compose stack (db, workers)</th>
+                  <td class="cmp-me"><span class="yes">Yes</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="partial">Add-ons</span></td>
+                  <td><span class="no">No</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">One-command setup</th>
+                  <td class="cmp-me"><span class="yes">Yes</span></td>
+                  <td><span class="yes">Yes</span></td>
+                  <td><span class="partial">Config + DNS</span></td>
+                  <td><span class="partial">Connect repo</span></td>
+                  <td><span class="partial">Connect repo</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Password on the URL</th>
+                  <td class="cmp-me"><span class="yes">Built in</span></td>
+                  <td><span class="partial">Paid</span></td>
+                  <td><span class="partial">Manual (Access)</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="partial">Team plan</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Auto-expiration (TTL)</th>
+                  <td class="cmp-me"><span class="yes">Yes</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="partial">Per deploy</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">PR preview URLs</th>
+                  <td class="cmp-me"><span class="yes">Beta</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="yes">Yes</span></td>
+                  <td><span class="yes">Yes</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Runs on your own machine / VPS</th>
+                  <td class="cmp-me"><span class="yes">Yes</span></td>
+                  <td><span class="yes">Yes</span></td>
+                  <td><span class="yes">Yes</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="no">No</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">No bandwidth / rate cap</th>
+                  <td class="cmp-me"><span class="yes">No limit</span></td>
+                  <td><span class="no">1GB · 40 rpm free</span></td>
+                  <td><span class="yes">No limit</span></td>
+                  <td><span class="partial">Usage-based</span></td>
+                  <td><span class="partial">Plan limits</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Stable URL across restarts</th>
+                  <td class="cmp-me"><span class="partial">Hosted soon</span></td>
+                  <td><span class="partial">Paid</span></td>
+                  <td><span class="yes">Yes</span></td>
+                  <td><span class="yes">Yes</span></td>
+                  <td><span class="yes">Yes</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Request inspection &amp; replay</th>
+                  <td class="cmp-me"><span class="no">No</span></td>
+                  <td><span class="yes">Yes</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="no">No</span></td>
+                  <td><span class="partial">Logs</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Cost to start</th>
+                  <td class="cmp-me"><span class="yes">$0 · OSS</span></td>
+                  <td><span class="partial">Free tier</span></td>
+                  <td><span class="partial">Free</span></td>
+                  <td><span class="partial">Usage billing</span></td>
+                  <td><span class="partial">Free tier</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="cmp-note">Comparison reflects typical default workflows. Every tool here is good at what it was built for — SoloEnv is built for sharing a real Docker stack fast.</p>
+        </div>
+      </section>
+
+      <section class="section section-trust" id="trust" aria-labelledby="trust-heading">
+        <div class="container">
+          <p class="eyebrow center">Built in the open</p>
+          <h2 id="trust-heading" class="center">No black box. Read the code, run the binary.</h2>
+          <p class="section-lead center mx-auto">
+            SoloEnv is a single open-source Go binary. It orchestrates Docker and Cloudflare on your
+            own hardware — there is no SoloEnv server in the request path and nothing to sign up for.
+          </p>
+
+          <div class="badges reveal" aria-label="Project status">
+            <img loading="lazy" src="https://img.shields.io/github/v/release/fleames/soloenv-cli?style=flat-square&color=7fd962&label=release" alt="Latest release" />
+            <img loading="lazy" src="https://img.shields.io/github/last-commit/fleames/soloenv-cli?style=flat-square&color=3fb6e0&label=last%20commit" alt="Last commit" />
+            <img loading="lazy" src="https://img.shields.io/github/license/fleames/soloenv-cli?style=flat-square&color=a78bfa" alt="License" />
+            <img loading="lazy" src="https://img.shields.io/github/go-mod/go-version/fleames/soloenv-cli?style=flat-square&color=00ADD8&label=go" alt="Go version" />
+          </div>
+
+          <div class="trust-grid reveal">
+            <div class="trust-main">
+              <div class="trust-code-head">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="terminal-title">.github/workflows/preview.yml</span>
+              </div>
+              <pre class="trust-code"><code><span class="t-dim"># Comment a live preview URL on every pull request</span>
+<span class="t-label">name:</span> preview
+<span class="t-label">on:</span> [pull_request]
+
+<span class="t-label">jobs:</span>
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: <span class="t-url">fleames/soloenv-action@v1</span>
+        with:
+          ttl: <span class="t-url">2h</span>
+          protect: <span class="t-url">true</span></code></pre>
+              <p class="trust-cap">Real GitHub Action (beta) — drops a preview link straight into the PR.</p>
+            </div>
+
+            <ul class="trust-list">
+              <li>
+                <strong>Your code stays local.</strong>
+                Containers run on your machine or VPS; only HTTP traffic is proxied through Cloudflare's edge.
+              </li>
+              <li>
+                <strong>HTTPS out of the box.</strong>
+                Every URL is a valid-cert <code>https://…trycloudflare.com</code> address.
+              </li>
+              <li>
+                <strong>Auditable.</strong>
+                MIT-licensed, ~single binary. Read every line on <a href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">GitHub</a>.
+              </li>
+              <li>
+                <strong>Prebuilt for every OS.</strong>
+                macOS, Linux, and Windows binaries on each <a href="https://github.com/fleames/soloenv-cli/releases" target="_blank" rel="noopener">release</a>.
+              </li>
+            </ul>
+          </div>
+
+          <div class="honesty reveal">
+            <h3>Straight talk: what SoloEnv is <em>not</em></h3>
+            <ul>
+              <li><strong>Not production hosting.</strong> It's for staging, demos, and reviews — not running your SaaS.</li>
+              <li><strong>Not a permanent URL (yet).</strong> Free quick-tunnel URLs rotate on restart; stable URLs are coming with the hosted version.</li>
+              <li><strong>Not a webhook debugger.</strong> Need request inspection and replay? ngrok is genuinely better at that.</li>
+              <li><strong>Not zero-latency.</strong> Traffic routes through Cloudflare's edge — great for sharing, not a CDN.</li>
+            </ul>
+          </div>
+
+          <div class="trust-actions reveal">
+            <a class="btn-ghost" href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              Star on GitHub
+            </a>
+            <a class="btn-ghost" href="https://github.com/fleames/soloenv-cli/releases" target="_blank" rel="noopener">Changelog &amp; releases</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="waitlist" aria-labelledby="cta-heading">
+        <div class="container narrow">
           <div class="cta-block reveal">
             <div class="cta-glow" aria-hidden="true"></div>
-            <h2 id="cta-heading">Want early access?</h2>
+            <h2 id="cta-heading">Get early access to hosted SoloEnv.</h2>
             <p class="cta-sub">
-              The CLI is live — we are validating demand and polishing the experience.
-              Join the waitlist for updates and invite-only demos.
+              The CLI is live today. We're building a hosted version with persistent URLs, team
+              sharing, and managed previews — join the list to try it first and steer what we build.
             </p>
-            <a class="btn-primary big" href="#" data-waitlist role="button">
-              Join the waitlist
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-            <p class="cta-note">Short Google Form · email + optional role · no spam</p>
+
+            <form class="cta-form" id="waitlistFormCta" novalidate>
+              <label class="sr-only" for="emailCta">Work email</label>
+              <input
+                class="hero-input"
+                id="emailCta"
+                name="email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="you@company.com"
+                required
+              />
+              <button class="btn-primary big" type="submit">
+                Notify me at launch
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+              <p class="form-msg" data-form-msg role="status" aria-live="polite"></p>
+            </form>
+
+            <ul class="cta-perks">
+              <li>First access to the hosted beta</li>
+              <li>Direct line to the roadmap</li>
+              <li>No spam — one email at launch</li>
+            </ul>
+            <p class="cta-note">
+              Prefer the terminal? <a href="https://github.com/fleames/soloenv-cli#install">Install the open-source CLI</a> and start now.
+            </p>
           </div>
         </div>
       </section>
@@ -333,30 +643,96 @@
       <section class="section" id="faq" aria-labelledby="faq-heading">
         <div class="container narrow">
           <p class="eyebrow center">FAQ</p>
-          <h2 id="faq-heading" class="center">Questions, answered.</h2>
+          <h2 id="faq-heading" class="center">Developer questions, answered straight.</h2>
           <div class="faq">
             <details class="faq-item">
-              <summary>Is SoloEnv live?</summary>
+              <summary>Is my code uploaded to your servers?</summary>
               <div class="faq-answer">
-                <p>Yes — CLI v0.2 is on <a href="https://github.com/fleames/soloenv-cli">GitHub</a>. This page is part of our validation experiment to measure broader demand.</p>
+                <p>No. Everything runs in Docker on your own machine or VPS. SoloEnv only opens a Cloudflare tunnel to proxy HTTP traffic to your local app — there is no SoloEnv server in the request path, and your source never leaves your box.</p>
               </div>
             </details>
             <details class="faq-item">
-              <summary>How do I install it?</summary>
+              <summary>How does the password protection work?</summary>
               <div class="faq-answer">
-                <p>Download from <a href="https://github.com/fleames/soloenv-cli/releases">Releases</a>, or run <code>go install github.com/fleames/soloenv-cli@latest</code>. Requires Docker.</p>
+                <p><code>--protect</code> starts a small built-in reverse proxy with HTTP basic auth in front of your app and tunnels <em>that</em>. Visitors hit the auth wall before they ever reach your running stack. SoloEnv generates a username/password (or you can supply your own).</p>
               </div>
             </details>
             <details class="faq-item">
-              <summary>Who is this for?</summary>
+              <summary>Is the connection encrypted? Do I get SSL?</summary>
               <div class="faq-answer">
-                <p>Solo founders, indie hackers, and freelancers shipping web apps with Docker who want staging without a platform team.</p>
+                <p>Yes. Cloudflare quick tunnels are HTTPS end-to-end, so you get a <code>https://…trycloudflare.com</code> URL with a valid certificate automatically. No cert wrangling.</p>
               </div>
             </details>
             <details class="faq-item">
-              <summary>Does it cost anything?</summary>
+              <summary>What about performance and latency?</summary>
               <div class="faq-answer">
-                <p>SoloEnv is free and open source. Quick tunnels use Cloudflare's free tier — no account required to start.</p>
+                <p>Traffic hops through Cloudflare's edge network, so expect normal tunnel latency (typically tens of milliseconds). That's ideal for demos, QA, and code review. It's a sharing tool for staging, not a production CDN.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>Does it work with Docker Compose?</summary>
+              <div class="faq-answer">
+                <p>Yes. SoloEnv auto-detects <code>compose.yaml</code> / <code>docker-compose.yml</code> and runs the whole multi-service stack, or builds and runs a single <code>Dockerfile</code>. No changes to your existing files.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>What do I need installed?</summary>
+              <div class="faq-answer">
+                <p>Docker and the <code>soloenv</code> binary (a single Go executable). <code>cloudflared</code> is fetched automatically the first time. No cloud account, no API keys to start.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>Can I use it in CI/CD?</summary>
+              <div class="faq-answer">
+                <p>Yes. The CLI runs headless with <code>--detach</code>, and there's a GitHub Action (beta) that posts a preview URL on each pull request. Pin a release version in CI for reproducible runs.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>Can my whole team use the same URL?</summary>
+              <div class="faq-answer">
+                <p>Yes — share the URL and password. Anyone with the link reaches your running stack until it expires or you run <code>soloenv down</code>. Great for client reviews and remote QA.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>How long can an environment stay up?</summary>
+              <div class="faq-answer">
+                <p>As long as the process runs. Use <code>--ttl</code> to auto-expire (e.g. <code>--ttl 168h</code> for a week) or leave it running with <code>--detach</code> and stop it with <code>soloenv down</code> when you're done.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>Is the URL guessable? How private is it?</summary>
+              <div class="faq-answer">
+                <p>Quick-tunnel URLs are random <code>*.trycloudflare.com</code> subdomains. Combined with <code>--protect</code>, they're suitable for private sharing. They are not meant for permanent public hosting.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>Can I use my own custom domain?</summary>
+              <div class="faq-answer">
+                <p>Not with free quick tunnels. Custom domains via named Cloudflare tunnels are on the roadmap — and a headline feature of the upcoming hosted version. Join the waitlist to get it first.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>Which operating systems are supported?</summary>
+              <div class="faq-answer">
+                <p>macOS, Linux, and Windows — prebuilt amd64 and arm64 binaries ship with every <a href="https://github.com/fleames/soloenv-cli/releases" target="_blank" rel="noopener">release</a>. Docker is the only hard dependency.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>Is this production-ready hosting?</summary>
+              <div class="faq-answer">
+                <p>No — and that's by design. SoloEnv is for staging, previews, and demos: "share the real app safely," not "run my SaaS on it." Use it to validate before you ship to your real infrastructure.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>What does it cost?</summary>
+              <div class="faq-answer">
+                <p>The CLI is free and open source under the MIT license. Quick tunnels run on Cloudflare's free tier with no account required. The hosted version (in progress) will add paid convenience features — the CLI stays free.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>How do I stop everything and clean up?</summary>
+              <div class="faq-answer">
+                <p><code>soloenv down</code> stops the tunnel, the auth proxy, and your containers, then clears local state. With <code>--ttl</code> it happens automatically — no leftover processes.</p>
               </div>
             </details>
           </div>
@@ -369,9 +745,11 @@
         <a class="logo" href="#top">Solo<span class="logo-accent">Env</span></a>
         <nav aria-label="Links" class="footer-social">
           <a href="https://github.com/fleames/soloenv-cli" target="_blank" rel="noopener">CLI</a>
-          <a href="https://github.com/fleames/soloenv-landing" target="_blank" rel="noopener">Landing</a>
+          <a href="https://github.com/fleames/soloenv-cli/releases" target="_blank" rel="noopener">Releases</a>
+          <a href="https://github.com/fleames/soloenv-landing" target="_blank" rel="noopener">Source</a>
+          <a href="#waitlist" data-waitlist-scroll>Early access</a>
         </nav>
-        <p class="footer-note">MIT · SoloEnv contributors</p>
+        <p class="footer-note">MIT · Open source · Built by <a href="https://vanoy.dev" target="_blank" rel="noopener">vanoy.dev</a></p>
       </div>
     </footer>
 
